@@ -99,18 +99,25 @@ public class Sc_Hero : MonoBehaviour
         animator.SetBool("stat_aim", isAiming);
     }
 
-    // IK untuk LookAt
+   // IK untuk LookAt
     void OnAnimatorIK(int layerIndex)
     {
         if (animator == null) return;
-
+    
+        // 1. Jika lagi AIM, utamakan lihat target (default kamu)
         if (isAiming && currentTarget != null)
         {
             animator.SetLookAtWeight(1.0f, 0.15f, 1.0f, 1.0f, 0.5f);
-            // Smooth biar ga snap
             Vector3 lookPos = Vector3.Lerp(transform.forward, currentTarget.transform.position - transform.position, 0.5f);
             animator.SetLookAtPosition(transform.position + lookPos);
         }
+        // 2. Jika tidak AIM tapi ada item dekat → kepala otomatis nengok
+        else if (!isAiming && currentTarget != null)
+        {
+            animator.SetLookAtWeight(0.8f, 0.1f, 1f, 0.8f, 0.5f);
+            animator.SetLookAtPosition(currentTarget.transform.position);
+        }
+        // 3. Jika tidak ada target
         else
         {
             animator.SetLookAtWeight(0f);
@@ -144,3 +151,4 @@ public class Sc_Hero : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lookAtRange);
     }
 }
+
