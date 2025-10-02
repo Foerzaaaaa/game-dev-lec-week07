@@ -1,2 +1,2 @@
-- Press E (pick ammo)
+- Press E (pick magazine)
 - Right Mouse Button (Aim)
